@@ -4,7 +4,7 @@
 Summary:	Orinoco wireless cards driver
 Summary(pl):	Sterownik kart bezprzewodowych Orinoco
 Name:		kernel-pcmcia-orinoco
-Version:	0.13b
+Version:	0.13d
 %define	rel	0
 Release:	%{rel}@%{_kernel_ver_str}
 License:	GPL
