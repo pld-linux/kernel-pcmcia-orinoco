@@ -3,7 +3,6 @@
 %bcond_without  dist_kernel     # allow non-distribution kernel
 %bcond_without  kernel          # don't build kernel modules
 %bcond_without  smp             # don't build SMP module
-%bcond_without  userspace       # don't build userspace module
 %bcond_with     verbose         # verbose build (V=1)
 #
 Summary:	Orinoco wireless cards driver
@@ -14,9 +13,9 @@ Version:	0.15rc2
 Release:	%{rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
-URL:		http://airsnort.shmoo.com/orinocoinfo.html
 Source0:	http://ozlabs.org/people/dgibson/dldwd/orinoco-%{version}.tar.gz
 # Source0-md5:	2246f0879439d74f7aabc7935cec90c0
+URL:		http://airsnort.shmoo.com/orinocoinfo.html
 %{?with_dist_kernel:BuildRequires:	kernel-source >= 2.6.0}
 BuildRequires:	rpmbuild(macros) >= 1.118
 %{?with_dist_kernel:%requires_releq_kernel_up}
