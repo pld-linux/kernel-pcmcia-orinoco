@@ -48,13 +48,11 @@ komputerów wieloprocesorowych.
 %patch1 -p1
 
 %build
-%{__make} SMP="-D__SMP__ -D_KERNEL_SMP=1"
+%{__make} EXTRACFLAGS="-D__SMP__ -D_KERNEL_SMP=1"
 mkdir smp
 mv *.o smp/
 %{__make} clean
-%{__make} SMP=""
-
-#gzip *.o smp/*.o
+%{__make} EXTRACFLAGS=""
 
 %install
 rm -rf $RPM_BUILD_ROOT
