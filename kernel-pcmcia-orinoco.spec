@@ -1,11 +1,15 @@
 #
 # Conditional build:
-# _without_dist_kernel	- without kernel from distribution
+%bcond_without  dist_kernel     # allow non-distribution kernel
+%bcond_without  kernel          # don't build kernel modules
+%bcond_without  smp             # don't build SMP module
+%bcond_without  userspace       # don't build userspace module
+%bcond_with     verbose         # verbose build (V=1)
 #
 Summary:	Orinoco wireless cards driver
 Summary(pl):	Sterownik kart bezprzewodowych Orinoco
 Name:		kernel-pcmcia-orinoco
-Version:	0.13d
+Version:	0.15rc2
 %define	rel	0
 Release:	%{rel}@%{_kernel_ver_str}
 License:	GPL
@@ -13,10 +17,9 @@ Group:		Base/Kernel
 URL:		http://airsnort.shmoo.com/orinocoinfo.html
 Source0:	http://ozlabs.org/people/dgibson/dldwd/orinoco-%{version}.tar.gz
 # Source0-md5:	1d59ba2351ea4f7fec68f9450144bd9b
-Patch1:		http://airsnort.shmoo.com/orinoco-0.13b-patched.diff
-%{!?_without_dist_kernel:BuildRequires:	kernel-source}
+%{?with_dist_kernel:BuildRequires:	kernel-source >= 2.6.0}
 BuildRequires:	rpmbuild(macros) >= 1.118
-%{!?_without_dist_kernel:%requires_releq_kernel_up}
+%{?with_dist_kernel:%requires_releq_kernel_up}
 Requires(post,postun):	/sbin/depmod
 ExclusiveArch:	%{ix86}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -34,7 +37,7 @@ Summary:	Orinoco wireless cards SMP driver.
 Summary(pl):	Sterownik SMP dla bezprzewodowych kart Orinoco.
 Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
-%{!?_without_dist_kernel:%requires_releq_kernel_up}
+%{?with_dist_kernel:%requires_releq_kernel_up}
 Requires(post,postun):	/sbin/depmod
 
 %description -n kernel-smp-pcmcia-orinoco
@@ -48,27 +51,49 @@ j±der wieloprocesorowych.
 
 %prep
 %setup -q -n orinoco-%{version}
-%patch1 -p1
 
 %build
-%{__make} \
-	KERNEL_VERSION=%{_kernel_ver} \
-	KERNEL_SRC=%{_kernelsrcdir} \
-	EXTRACFLAGS="-D__SMP__ -D_KERNEL_SMP=1"
-mkdir smp
-mv *.o smp/
-%{__make} clean
-%{__make} \
-	KERNEL_VERSION=%{_kernel_ver} \
-	KERNEL_SRC=%{_kernelsrcdir} \
-	EXTRACFLAGS=""
+%if %{with kernel}
+# kernel module(s)
+for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}; do
+    install -d $cfg
+    if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
+        exit 1
+    fi
+    rm -rf include
+    install -d include/{linux,config}
+    ln -sf %{_kernelsrcdir}/config-$cfg .config
+    ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h include/linux/autoconf.h
+    ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
+    touch include/config/MARKER
+#
+#       patching/creating makefile(s) (optional)
+#
+    %{__make} -C %{_kernelsrcdir} clean \
+        RCS_FIND_IGNORE="-name '*.ko' -o" \
+        M=$PWD O=$PWD \
+        %{?with_verbose:V=1}
+    %{__make} -C %{_kernelsrcdir} modules \
+        CC="%{__cc}" CPP="%{__cpp}" \
+        M=$PWD O=$PWD \
+        %{?with_verbose:V=1}
+
+    mv *.ko $cfg
+done
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/kernel/drivers/net/wireless/
+install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/kernel/drivers/net/wireless
 
-install *.o $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/drivers/net/wireless/
-install smp/*.o $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/drivers/net/wireless/
+%if %{with kernel}
+install %{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}/*.ko \
+        $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/drivers/net/wireless
+%if %{with smp} && %{with dist_kernel}
+install smp/*.ko \
+        $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/drivers/net/wireless
+%endif
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -85,12 +110,16 @@ rm -rf $RPM_BUILD_ROOT
 %postun	-n kernel-smp-pcmcia-orinoco
 %depmod %{_kernel_ver}smp
 
+%if %{with kernel}
 %files
 %defattr(644,root,root,755)
 %doc README.orinoco
 /lib/modules/%{_kernel_ver}/kernel/drivers/net/wireless/*
 
+%if %{with smp} && %{with dist_kernel}
 %files -n kernel-smp-pcmcia-orinoco
 %defattr(644,root,root,755)
 %doc README.orinoco
 /lib/modules/%{_kernel_ver}smp/kernel/drivers/net/wireless/*
+%endif
+%endif
