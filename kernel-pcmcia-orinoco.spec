@@ -29,7 +29,7 @@ Orinoco wireless cards driver. It contains patch to allow monitor mode
 used by kismet.
 
 %description -l pl
-Sterownik kart bezprzewodowych Orinoco. Zawiera ³atkê umo¿liwaj±c±
+Sterownik kart bezprzewodowych Orinoco. Zawiera ³atkê umo¿liwiaj±c±
 u¿ycie trybu monitorowania wykorzystywanego przez kismet.
 
 %package -n kernel-smp-pcmcia-orinoco
