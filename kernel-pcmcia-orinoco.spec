@@ -1,3 +1,7 @@
+#
+# Conditional build:
+# _without_dist_kernel	- without kernel from distribution
+#
 Summary:	Orinoco wireless cards driver
 Summary(pl):	Sterownik kart bezprzewodowych Orinoco
 Name:		kernel-pcmcia-orinoco
@@ -68,16 +72,16 @@ install smp/*.o $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/drivers/net
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/depmod -a
+/sbin/depmod -a -F /boot/System.map-%{_kernel_ver} %{_kernel_ver}
 
 %postun
-/sbin/depmod -a
+/sbin/depmod -a -F /boot/System.map-%{_kernel_ver} %{_kernel_ver}
 
 %post	-n kernel-smp-pcmcia-orinoco
-/sbin/depmod -a
+/sbin/depmod -a -F /boot/System.map-%{_kernel_ver}smp %{_kernel_ver}smp
 
 %postun	-n kernel-smp-pcmcia-orinoco
-/sbin/depmod -a
+/sbin/depmod -a -F /boot/System.map-%{_kernel_ver}smp %{_kernel_ver}smp
 
 %files
 %defattr(644,root,root,755)
