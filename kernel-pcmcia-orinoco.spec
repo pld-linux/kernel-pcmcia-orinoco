@@ -48,11 +48,11 @@ j±der wieloprocesorowych.
 %patch1 -p1
 
 %build
-%{__make} EXTRACFLAGS="-D__SMP__ -D_KERNEL_SMP=1"
+%{__make} KERNEL_VERSION=%{_kernel_ver} EXTRACFLAGS="-D__SMP__ -D_KERNEL_SMP=1"
 mkdir smp
 mv *.o smp/
 %{__make} clean
-%{__make} EXTRACFLAGS=""
+%{__make} KERNEL_VERSION=%{_kernel_ver} EXTRACFLAGS=""
 
 %install
 rm -rf $RPM_BUILD_ROOT
