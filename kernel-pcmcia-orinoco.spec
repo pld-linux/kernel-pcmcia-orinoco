@@ -41,7 +41,7 @@ used by kismet. SMP version.
 %description -n kernel-smp-pcmcia-orinoco -l pl
 Sterownik kart bezprzewodowych Orinoco. Zawiera ³atkê umo¿liwaj±c±
 u¿ycie trybu monitorowania wykorzystywanego przez kismet. Wersja dla
-komputerów wieloprocesorowych.
+j±der wieloprocesorowych.
 
 %prep
 %setup -q -n orinoco-%{version}
