@@ -15,6 +15,7 @@ Source0:	http://ozlabs.org/people/dgibson/dldwd/orinoco-%{version}.tar.gz
 # Source0-md5:	1d59ba2351ea4f7fec68f9450144bd9b
 Patch1:		http://airsnort.shmoo.com/orinoco-0.13b-patched.diff
 %{!?_without_dist_kernel:BuildRequires:	kernel-source}
+BuildRequires:	rpmbuild(macros) >= 1.118
 %{!?_without_dist_kernel:%requires_releq_kernel_up}
 Requires(post,postun):	/sbin/depmod
 ExclusiveArch:	%{ix86}
@@ -73,16 +74,16 @@ install smp/*.o $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/drivers/net
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/depmod -a %{!?_without_dist_kernel:-F /boot/System.map-%{_kernel_ver} }%{_kernel_ver}
+%depmod %{_kernel_ver}
 
 %postun
-/sbin/depmod -a %{!?_without_dist_kernel:-F /boot/System.map-%{_kernel_ver} }%{_kernel_ver}
+%depmod %{_kernel_ver}
 
 %post	-n kernel-smp-pcmcia-orinoco
-/sbin/depmod -a %{!?_without_dist_kernel:-F /boot/System.map-%{_kernel_ver}smp }%{_kernel_ver}smp
+%depmod %{_kernel_ver}smp
 
 %postun	-n kernel-smp-pcmcia-orinoco
-/sbin/depmod -a %{!?_without_dist_kernel:-F /boot/System.map-%{_kernel_ver}smp }%{_kernel_ver}smp
+%depmod %{_kernel_ver}smp
 
 %files
 %defattr(644,root,root,755)
