@@ -12,6 +12,7 @@ License:	GPL
 Group:		Base/Kernel
 URL:		http://airsnort.shmoo.com/orinocoinfo.html
 Source0:	http://ozlabs.org/people/dgibson/dldwd/orinoco-%{version}.tar.gz
+# Source0-md5:	1d59ba2351ea4f7fec68f9450144bd9b
 Patch1:		http://airsnort.shmoo.com/orinoco-0.13b-patched.diff
 %{!?_without_dist_kernel:BuildRequires:	kernel-source}
 %{!?_without_dist_kernel:%requires_releq_kernel_up}
