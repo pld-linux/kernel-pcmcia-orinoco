@@ -19,7 +19,7 @@ BuildRequires:	rpmbuild(macros) >= 1.118
 %{!?_without_dist_kernel:%requires_releq_kernel_up}
 Requires(post,postun):	/sbin/depmod
 ExclusiveArch:	%{ix86}
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Orinoco wireless cards driver. It contains patch to allow monitor mode
