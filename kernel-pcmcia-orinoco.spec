@@ -6,7 +6,7 @@
 %bcond_with	verbose		# verbose build (V=1)
 #
 Summary:	Orinoco wireless cards driver
-Summary(pl):	Sterownik kart bezprzewodowych Orinoco
+Summary(pl.UTF-8):   Sterownik kart bezprzewodowych Orinoco
 Name:		kernel-pcmcia-orinoco
 Version:	0.15rc4
 %define	rel	0
@@ -27,13 +27,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Orinoco wireless cards driver. It contains patch to allow monitor mode
 used by kismet.
 
-%description -l pl
-Sterownik kart bezprzewodowych Orinoco. Zawiera ³atkê umo¿liwiaj±c±
-u¿ycie trybu monitorowania wykorzystywanego przez kismet.
+%description -l pl.UTF-8
+Sterownik kart bezprzewodowych Orinoco. Zawiera Å‚atkÄ™ umoÅ¼liwiajÄ…cÄ…
+uÅ¼ycie trybu monitorowania wykorzystywanego przez kismet.
 
 %package -n kernel-smp-pcmcia-orinoco
 Summary:	Orinoco wireless cards SMP driver.
-Summary(pl):	Sterownik SMP dla bezprzewodowych kart Orinoco.
+Summary(pl.UTF-8):   Sterownik SMP dla bezprzewodowych kart Orinoco.
 Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %{?with_dist_kernel:%requires_releq_kernel_up}
@@ -43,10 +43,10 @@ Requires(post,postun):	/sbin/depmod
 Orinoco wireless cards driver. It contains patch to allow monitor mode
 used by kismet. SMP version.
 
-%description -n kernel-smp-pcmcia-orinoco -l pl
-Sterownik kart bezprzewodowych Orinoco. Zawiera ³atkê umo¿liwaj±c±
-u¿ycie trybu monitorowania wykorzystywanego przez kismet. Wersja dla
-j±der wieloprocesorowych.
+%description -n kernel-smp-pcmcia-orinoco -l pl.UTF-8
+Sterownik kart bezprzewodowych Orinoco. Zawiera Å‚atkÄ™ umoÅ¼liwajÄ…cÄ…
+uÅ¼ycie trybu monitorowania wykorzystywanego przez kismet. Wersja dla
+jÄ…der wieloprocesorowych.
 
 %prep
 %setup -q -n orinoco-%{version}
