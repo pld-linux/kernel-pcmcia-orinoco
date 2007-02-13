@@ -6,7 +6,7 @@
 %bcond_with	verbose		# verbose build (V=1)
 #
 Summary:	Orinoco wireless cards driver
-Summary(pl.UTF-8):   Sterownik kart bezprzewodowych Orinoco
+Summary(pl.UTF-8):	Sterownik kart bezprzewodowych Orinoco
 Name:		kernel-pcmcia-orinoco
 Version:	0.15rc4
 %define	rel	0
@@ -33,7 +33,7 @@ użycie trybu monitorowania wykorzystywanego przez kismet.
 
 %package -n kernel-smp-pcmcia-orinoco
 Summary:	Orinoco wireless cards SMP driver.
-Summary(pl.UTF-8):   Sterownik SMP dla bezprzewodowych kart Orinoco.
+Summary(pl.UTF-8):	Sterownik SMP dla bezprzewodowych kart Orinoco.
 Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %{?with_dist_kernel:%requires_releq_kernel_up}
